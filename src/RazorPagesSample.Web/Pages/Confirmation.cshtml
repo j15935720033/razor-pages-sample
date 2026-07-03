@@ -1,16 +1,64 @@
 ﻿@page
+@* 
+    @page 表示這個檔案是一個 Razor Page。
+    使用者可以透過網址直接瀏覽這個頁面。
+*@
+
 @model ConfirmationModel
+@*
+    指定這個頁面使用的 PageModel 類別。
+
+    對應的後端程式通常是：
+    Confirmation.cshtml.cs
+
+    類別名稱通常是：
+    ConfirmationModel
+*@
+
 @{
+    // 設定目前頁面的標題。
+    // _Layout.cshtml 通常會透過 ViewData["Title"] 顯示在瀏覽器標題或網頁標題中。
     ViewData["Title"] = "Contact";
 }
 
+@* Bootstrap 的 container，用來限制內容寬度並讓內容保持適當間距。 *@
 <div class="container">
+
+    @*
+        顯示頁面的主要標題。
+
+        mt-4：上方外距。
+        mb-3：下方外距。
+    *@
     <h1 class="mt-4 mb-3">
         Thank you
     </h1>
+
+    @* 顯示一條水平分隔線。 *@
     <hr />
+
+    @*
+        判斷 Model.Message 是否有內容。
+
+        string.IsNullOrWhiteSpace() 會檢查字串是否為：
+        1. null
+        2. 空字串 ""
+        3. 只有空白字元
+
+        前面的 ! 表示「不是」。
+
+        因此這段條件的意思是：
+        當 Model.Message 不是 null、不是空字串，
+        而且不是只有空白時，才顯示訊息。
+    *@
     @if (!string.IsNullOrWhiteSpace(Model.Message))
     {
+        @*
+            顯示 ConfirmationModel 裡面的 Message 屬性。
+
+            @Model.Message 代表從 PageModel 取得 Message 的值，
+            並將內容輸出到 HTML 頁面中。
+        *@
         <h3>@Model.Message</h3>
     }
 </div>

@@ -1,61 +1,231 @@
-﻿@page "{id:int}"
+﻿@* 
+    指定這是一個 Razor Page。
+
+    路由格式為：
+    /EditBook/1
+    /EditBook/2
+
+    {id:int} 表示：
+    1. 網址必須提供 id
+    2. id 必須是整數
+*@
+@page "{id:int}"
+
+@* 
+    指定此頁面使用的 PageModel 類別。
+    對應的後端程式通常是 EditBook.cshtml.cs 裡面的 EditBookModel。
+*@
 @model EditBookModel
+
 @{
+    // 設定目前頁面的標題。
+    // 通常會在 _Layout.cshtml 中透過 ViewData["Title"] 顯示。
     ViewData["Title"] = "Edit Book";
 }
 
+@* Bootstrap 的 container，用來限制內容寬度並讓內容置中。 *@
 <div class="container">
+
+    @* 
+        顯示目前正在編輯的書籍名稱。
+        Model.Book.Title 是從 EditBookModel 中取得 Book 資料。
+    *@
     <h1 class="mt-4 mb-3">
         @Model.Book.Title
     </h1>
 
+    @* Bootstrap 網格系統的列。 *@
     <div class="row">
+
+        @* 
+            在中型螢幕以上占用 8 欄。
+            mb-4 表示下方外距。
+        *@
         <div class="col-md-8 mb-4">
+
+            @* 
+                表單送出到 EditBook Razor Page。
+
+                asp-page="EditBook"：
+                表示送出到 EditBook 頁面。
+
+                method="post"：
+                使用 HTTP POST 方式送出資料，
+                通常會執行 EditBook.cshtml.cs 中的 OnPost() 或 OnPostAsync()。
+            *@
             <form asp-page="EditBook" method="post">
-                <div asp-validation-summary="All" class="field-validation-error"></div>
+
+                @* 
+                    顯示所有模型驗證錯誤訊息。
+
+                    asp-validation-summary="All"：
+                    顯示所有欄位及模型層級的驗證錯誤。
+                *@
+                <div asp-validation-summary="All"
+                     class="field-validation-error">
+                </div>
+
+                @* 
+                    隱藏欄位，用來保存書籍的 Id。
+
+                    使用者看不到這個欄位，
+                    但表單送出時，Book.Id 仍會傳回後端。
+                *@
                 <input asp-for="Book.Id" type="hidden" />
 
+                @* 書名輸入區塊。 *@
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Book.Title">Title:</label>
-                        <input asp-for="Book.Title" class="form-control" />
+
+                        @* 
+                            asp-for 會自動把 label 與 Book.Title 欄位建立關聯。
+                        *@
+                        <label asp-for="Book.Title">
+                            Title:
+                        </label>
+
+                        @* 
+                            輸入書名。
+
+                            asp-for="Book.Title" 會自動產生：
+                            name="Book.Title"
+                            id="Book_Title"
+                            value="目前的書名"
+                        *@
+                        <input asp-for="Book.Title"
+                               class="form-control" />
                     </div>
                 </div>
+
+                @* 書籍網址代稱輸入區塊。 *@
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Book.Slug">Slug (short name):</label>
-                        <input asp-for="Book.Slug" class="form-control" />
+
+                        @* Slug 通常是用在網址中的簡短名稱。 *@
+                        <label asp-for="Book.Slug">
+                            Slug (short name):
+                        </label>
+
+                        @* 輸入書籍的 Slug。 *@
+                        <input asp-for="Book.Slug"
+                               class="form-control" />
                     </div>
                 </div>
+
+                @* 作者輸入區塊。 *@
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Book.Author">Author:</label>
-                        <input asp-for="Book.Author" class="form-control">
+
+                        @* 作者欄位標籤。 *@
+                        <label asp-for="Book.Author">
+                            Author:
+                        </label>
+
+                        @* 輸入作者名稱。 *@
+                        <input asp-for="Book.Author"
+                               class="form-control" />
                     </div>
                 </div>
+
+                @* 書籍描述輸入區塊。 *@
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Book.Description">Message:</label>
-                        <textarea rows="10" cols="100" asp-for="Book.Description" class="form-control" style="resize:none"></textarea>
+
+                        @* 書籍描述欄位標籤。 *@
+                        <label asp-for="Book.Description">
+                            Message:
+                        </label>
+
+                        @* 
+                            多行文字輸入框，用來輸入書籍描述。
+
+                            rows="10"：
+                            顯示約 10 行高度。
+
+                            cols="100"：
+                            設定文字區域的寬度提示。
+
+                            resize:none：
+                            禁止使用者拖曳調整文字框大小。
+                        *@
+                        <textarea rows="10"
+                                  cols="100"
+                                  asp-for="Book.Description"
+                                  class="form-control"
+                                  style="resize:none"></textarea>
                     </div>
                 </div>
+
+                @* 出版日期輸入區塊。 *@
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Book.ReleaseDate" type="date">Release Date:</label>
-                        <input asp-for="Book.ReleaseDate" class="form-control">
+
+                        @* 
+                            出版日期欄位標籤。
+
+                            注意：
+                            label 標籤不需要設定 type="date"，
+                            type 應該設定在 input 上。
+                        *@
+                        <label asp-for="Book.ReleaseDate">
+                            Release Date:
+                        </label>
+
+                        @* 
+                            輸入出版日期。
+                            type="date" 會顯示瀏覽器的日期選擇器。
+                        *@
+                        <input asp-for="Book.ReleaseDate"
+                               type="date"
+                               class="form-control" />
                     </div>
                 </div>
+
+                @* 書籍圖片輸入區塊。 *@
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Book.Image" type="date">Image:</label>
-                        <input asp-for="Book.Image" class="form-control">
+
+                        @* 圖片欄位標籤。 *@
+                        <label asp-for="Book.Image">
+                            Image:
+                        </label>
+
+                        @* 
+                            輸入圖片的檔名或網址。
+
+                            這裡是一般文字輸入框，
+                            並不是實際上傳圖片的檔案選擇器。
+                        *@
+                        <input asp-for="Book.Image"
+                               class="form-control" />
                     </div>
                 </div>
-                
-                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-                <a asp-page="Books" class="btn btn-secondary">Cancel</a>                
+
+                @* 
+                    儲存按鈕。
+
+                    type="submit"：
+                    點擊後會送出整個 form。
+                *@
+                <button type="submit"
+                        class="btn btn-primary"
+                        id="saveButton">
+                    Save
+                </button>
+
+                @* 
+                    取消按鈕。
+
+                    asp-page="Books"：
+                    會產生前往 Books Razor Page 的網址。
+                    它不會送出表單。
+                *@
+                <a asp-page="Books"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
             </form>
         </div>
     </div>
-
 </div>

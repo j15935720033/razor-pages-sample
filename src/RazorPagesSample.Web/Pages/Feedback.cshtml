@@ -1,7 +1,37 @@
-﻿@page "/feedback/{code:promo}"
+﻿@*
+    @page 表示這個檔案是一個 Razor Page。
+
+    "/feedback/{code:promo}" 是這個頁面的網址路由格式。
+
+    feedback：
+    固定的網址路徑。
+
+    {code}：
+    接收網址中的路由參數。
+
+    promo：
+    自訂的路由條件，會用來檢查 code 是否符合指定規則。
+
+    例如網址：
+    /feedback/ABC123
+
+    ABC123 就會傳入 code 參數。
+*@
+@page "/feedback/{code:promo}"
+
+@*
+    指定這個 Razor Page 對應的 PageModel 類別。
+
+    FeedbackModel 通常寫在：
+    Feedback.cshtml.cs
+*@
 @model FeedbackModel
+
 @{
+    // 設定目前頁面的標題。
+    // 通常會在 _Layout.cshtml 中使用 ViewData["Title"] 顯示。
     ViewData["Title"] = "Feedback";
 }
 
+<!-- 顯示頁面的主要標題 -->
 <h1>Unfortunately we don't provide a real feedback page ;-)</h1>

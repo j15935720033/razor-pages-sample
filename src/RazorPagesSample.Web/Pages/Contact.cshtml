@@ -1,63 +1,261 @@
 ﻿@page
 @model ContactModel
+
 @{
+    // 設定目前頁面的標題。
+    // 通常會在共用版面配置 _Layout.cshtml 中，
+    // 使用 ViewData["Title"] 顯示瀏覽器標題。
     ViewData["Title"] = "Contact";
 }
 
+<!-- Bootstrap 容器，讓內容保持適當寬度與左右間距 -->
 <div class="container">
+
+    <!-- 頁面標題 -->
     <h1 class="mt-4 mb-3">
         Contact
     </h1>
+
     <hr />
-    @if(!string.IsNullOrWhiteSpace(Model.Message))
+
+    @* 
+        判斷後端 ContactModel 的 Message 屬性是否有內容。
+
+        string.IsNullOrWhiteSpace() 會判斷字串是否為：
+        1. null
+        2. 空字串 ""
+        3. 只有空白字元
+
+        前面的 ! 表示「不是」。
+        因此這段意思是：如果 Model.Message 有內容，就顯示成功訊息。
+    *@
+    @if (!string.IsNullOrWhiteSpace(Model.Message))
     {
-        <div class="alert alert-success">@Model.Message</div>
+        <!-- Bootstrap 成功提示訊息 -->
+        <div class="alert alert-success">
+            @Model.Message
+        </div>
     }
+
+    <!-- Bootstrap 的列 -->
     <div class="row">
+
+        <!--
+            左側欄位：
+            col-md-8 表示在中型以上螢幕占 8/12 寬度。
+            mb-4 表示下方加入間距。
+        -->
         <div class="col-md-8 mb-4">
+
+            <!--
+                聯絡表單。
+
+                asp-page="Contact"
+                表示表單送到 Contact Razor Page。
+
+                找到 Pages/Contact.cshtml
+                        ↓
+                找到它對應的 PageModel
+                執行 Contact.cshtml.cs 裡面的 OnPost() 方法。
+               
+
+                method="post"
+                表示使用 HTTP POST 方法送出資料。
+            -->
             <form asp-page="Contact" method="post">
+
+                <!-- 姓名欄位 -->
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Contact.Name">Name:</label>
-                        <input asp-for="Contact.Name" class="form-control" />
+
+                        <!--
+                            asp-for 會綁定 ContactModel 裡面的 Contact.Name 屬性。
+                            Razor 會自動產生對應的 for 屬性。
+                        -->
+                        <label asp-for="Contact.Name">
+                            Name:
+                        </label>
+
+                        <!--
+                            輸入姓名。
+
+                            asp-for 會自動產生：
+                            1. id
+                            2. name
+                            3. value
+                            4. 適合的 input type
+
+                            使用者輸入的值會綁定到 Contact.Name。
+                        -->
+                        <input asp-for="Contact.Name"
+                               class="form-control" />
+
+                        <!--
+                            顯示 Contact.Name 的資料驗證錯誤訊息。
+
+                            例如後端使用：
+                            [Required]
+                            [StringLength]
+                        -->
                         <span asp-validation-for="Contact.Name"></span>
                     </div>
                 </div>
+
+                <!-- 電話欄位 -->
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Contact.Phone">Phone Number:</label>
-                        <input asp-for="Contact.Phone" class="form-control" />
+
+                        <!-- 綁定 Contact.Phone 屬性 -->
+                        <label asp-for="Contact.Phone">
+                            Phone Number:
+                        </label>
+
+                        <!-- 使用者輸入電話號碼 -->
+                        <input asp-for="Contact.Phone"
+                               class="form-control" />
+
+                        <!-- 顯示電話欄位的驗證錯誤訊息 -->
                         <span asp-validation-for="Contact.Phone"></span>
                     </div>
                 </div>
+
+                <!-- Email 欄位 -->
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Contact.Email">Email:</label>
-                        <input asp-for="Contact.Email" class="form-control">
+
+                        <!-- 綁定 Contact.Email 屬性 -->
+                        <label asp-for="Contact.Email">
+                            Email:
+                        </label>
+
+                        <!--
+                            使用者輸入 Email。
+
+                            如果 Contact.Email 有設定 [EmailAddress]，
+                            驗證失敗時會在下方顯示錯誤訊息。
+                        -->
+                        <input asp-for="Contact.Email"
+                               class="form-control" />
+
+                        <!-- 顯示 Email 欄位的驗證錯誤訊息 -->
                         <span asp-validation-for="Contact.Email"></span>
                     </div>
                 </div>
+
+                <!-- 訊息內容欄位 -->
                 <div class="control-group form-group">
                     <div class="controls">
-                        <label asp-for="Contact.Message">Message:</label>
-                        <textarea rows="10" cols="100" asp-for="Contact.Message" class="form-control" style="resize:none"></textarea>
+
+                        <!-- 綁定 Contact.Message 屬性 -->
+                        <label asp-for="Contact.Message">
+                            Message:
+                        </label>
+
+                        <!--
+                            多行文字輸入框。
+
+                            rows="10"
+                            表示預設顯示 10 行高度。
+
+                            cols="100"
+                            表示預設欄位寬度，不過實際寬度主要由
+                            Bootstrap 的 form-control 控制。
+
+                            style="resize:none"
+                            表示使用者不能拖曳調整文字框大小。
+                        -->
+                        <textarea rows="10"
+                                  cols="100"
+                                  asp-for="Contact.Message"
+                                  class="form-control"
+                                  style="resize: none"></textarea>
+
+                        <!-- 顯示訊息欄位的驗證錯誤訊息 -->
                         <span asp-validation-for="Contact.Message"></span>
                     </div>
                 </div>
+
+                <!--
+                    預留顯示成功訊息或 JavaScript 執行結果的位置。
+                    目前這個 div 沒有放入任何內容。
+                -->
                 <div id="success"></div>
-                <button type="submit" class="btn btn-primary" id="sendMessageButton">Send Message!</button>
+
+                <!--
+                    送出按鈕。
+
+                    type="submit"
+                    按下後會送出上面的 form 表單。
+                -->
+                <button type="submit"
+                        class="btn btn-primary"
+                        id="sendMessageButton">
+                    Send Message!
+                </button>
             </form>
         </div>
+
+        <!--
+            右側欄位：
+            col-md-4 表示在中型以上螢幕占 4/12 寬度。
+        -->
         <div class="col-md-4">
             <div>
+
+                <!-- 訂閱區塊標題 -->
                 <h3>Keep in Touch</h3>
-                <p>Sign up for our mailing list - no spam, we promise.</p>
+
+                <!-- 訂閱說明 -->
+                <p>
+                    Sign up for our mailing list - no spam, we promise.
+                </p>
+
+                <!--
+                    電子報訂閱表單。
+
+                    asp-page-handler="Subscribe"
+                    表示表單送出時，會執行 Contact.cshtml.cs 裡面的：
+
+                    OnGetSubscribe()
+                    或
+                    OnPostSubscribe()
+
+                    因為這裡沒有設定 method="post"，
+                    HTML form 預設會使用 GET 方法，
+                    所以通常會執行 OnGetSubscribe()。
+                -->
                 <form asp-page-handler="Subscribe">
+
+                    <!-- 訂閱 Email 輸入欄位 -->
                     <div class="control-group form-group">
-                        <input name="address" type="text" class="form-control" placeholder="Email" />
+
+                        <!--
+                            name="address"
+                            表示送出表單時，參數名稱是 address。
+
+                            後端可以使用下面的方法接收：
+
+                            public IActionResult OnGetSubscribe(string address)
+                        -->
+                        <input name="address"
+                               type="text"
+                               class="form-control"
+                               placeholder="Email" />
                     </div>
+
+                    <!-- 加入訂閱按鈕 -->
                     <div class="control-group form-group">
-                        <input type="submit" class="btn btn-primary" value="Join" />
+
+                        <!--
+                            type="submit"
+                            按下後會送出訂閱表單。
+
+                            value="Join"
+                            是按鈕上顯示的文字。
+                        -->
+                        <input type="submit"
+                               class="btn btn-primary"
+                               value="Join" />
                     </div>
                 </form>
             </div>
