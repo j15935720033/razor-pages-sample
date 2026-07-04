@@ -11,7 +11,6 @@ a.navbar-brand {
 -------------------------------------------------- */
 html {
   font-size: 14px;
-  background-color: rgb(202, 200, 200);
 }
 @media (min-width: 768px) {
   html {
@@ -45,6 +44,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  background-color: rgb(184, 182, 182)
 }
 .footer {
   position: absolute;
@@ -54,6 +54,8 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
+  color:rgb(69, 68, 68) !important;
+  background-color: rgb(214, 212, 212);
 }
 
 .field-validation-error {

@@ -1,20 +1,77 @@
-﻿@page "/book/{slug}"
+﻿@* 
+    將這個 Razor Page 的網址設定為：
+    /book/{slug}
+
+    例如：
+    /book/asp-net-core
+
+    {slug} 是網址中的動態參數，
+    會傳送到 BookDetail.cshtml.cs 的 PageModel 中。
+*@
+@page "/book/{slug}"
+
+@* 
+    指定這個 Razor Page 使用的 PageModel。
+    BookDetailModel 通常定義在 BookDetail.cshtml.cs。
+*@
 @model BookDetailModel
+
 @{
+    // 設定目前頁面的標題。
+    // Model.Book.Title 代表從 PageModel 中取得書籍標題。
     ViewData["Title"] = Model.Book.Title;
 }
 
+@* text-center：讓區塊內的文字水平置中 *@
 <div class="text-center">
+
+    @* 
+        顯示書籍標題。
+        display-4 是 Bootstrap 的大型標題樣式。
+    *@
     <h1 class="display-4">@Model.Book.Title</h1>
     
+    @* Bootstrap 容器，用來控制頁面寬度與排列 *@
     <div class="container">
+
+        @* Bootstrap 的一列 *@
         <div class="row">
+
+            @* 
+                col-md-12：
+                在中型以上螢幕寬度占滿 12 欄。
+            *@
             <div class="col-md-12">
+
+                @* 
+                    card：Bootstrap 卡片元件。
+                    mb-12：設定下方外距。
+                    shadow-sm：加入小型陰影效果。
+                *@
                 <div class="card mb-12 shadow-sm">
+
+                    @* 卡片內容區域 *@
                     <div class="card-body">
-                        <p class="card-text">@Model.Book.Description</p>
-                        <p class="card-text">@Model.Book.ReleaseDate.ToShortDateString()</p>
-                        <p class="card-text">@Model.Book.Author</p>
+
+                        @* 顯示書籍說明 *@
+                        <p class="card-text">
+                            @Model.Book.Description
+                        </p>
+
+                        @* 
+                            顯示書籍發行日期。
+                            ToShortDateString() 會將日期轉成簡短日期格式。
+                            例如：2026/7/4
+                        *@
+                        <p class="card-text">
+                            @Model.Book.ReleaseDate.ToShortDateString()
+                        </p>
+
+                        @* 顯示書籍作者 *@
+                        <p class="card-text">
+                            @Model.Book.Author
+                        </p>
+
                     </div>
                 </div>
             </div>

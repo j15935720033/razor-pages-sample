@@ -1,29 +1,181 @@
 ﻿@page
 @model BooksModel
+
 @{
+    // 設定目前頁面的標題。
+    // 通常會在共用版面配置 _Layout.cshtml 中透過 ViewData["Title"] 顯示。
     ViewData["Title"] = "Books";
 }
 
+<!--
+    text-center：
+    使用 Bootstrap 將區塊內的文字水平置中。
+-->
 <div class="text-center">
+
+    <!-- 頁面主要標題 -->
     <h1 class="display-4">Books</h1>
-    
+
+    <!--
+        Bootstrap 的 container 容器。
+        用來限制內容寬度，並在左右保留適當間距。
+    -->
     <div class="container">
+
+        <!--
+            Bootstrap 的 row 列。
+            col 欄位必須放在 row 裡面。
+        -->
         <div class="row">
+
+            @*
+                Model.Books 是由 Books.cshtml.cs 中的 BooksModel 提供。
+
+                foreach 會逐筆取出書籍資料，
+                每次迴圈的 book 代表一本書。
+            *@
             @foreach (var book in Model.Books)
             {
+                <!--
+                    col-md-4：
+                    當畫面寬度達到 md 尺寸以上時，
+                    每一本書占 4 個欄位。
+
+                    Bootstrap 一列共有 12 欄，
+                    所以每列最多可以顯示 3 本書：
+                    12 ÷ 4 = 3
+                -->
                 <div class="col-md-4">
+
+                    <!--
+                        card：
+                        Bootstrap 卡片元件。
+
+                        mb-4：
+                        設定下方外距，避免卡片之間太擁擠。
+                    -->
                     <div class="card mb-4">
-                        <img asp-append-version="true" class="bd-placeholder-img card-img-top" width="50%" height="200" src="~/images/@book.Image"/>
+
+                        <!--
+                            顯示書籍圖片。
+
+                            src="~/images/@book.Image"：
+                            圖片會從 wwwroot/images 資料夾中讀取。
+
+                            例如：
+                            book.Image = "book1.jpg"
+
+                            實際圖片路徑會是：
+                            wwwroot/images/book1.jpg
+
+                            asp-append-version="true"：
+                            ASP.NET Core 會在圖片網址後面加入版本資訊，
+                            當圖片內容變更時，可以避免瀏覽器繼續使用舊快取。
+                        -->
+                        <img asp-append-version="true"
+                             class="bd-placeholder-img card-img-top"
+                             width="50%"
+                             height="200"
+                             src="~/images/@book.Image"
+                             alt="@book.Title" />
+
+                        <!-- 卡片內容區域 -->
                         <div class="card-body">
+
+                            <!-- 顯示書籍標題 -->
                             <p class="card-text">@book.Title</p>
+
+                            <!--
+                                d-flex：
+                                使用 Flexbox 排版。
+
+                                justify-content-between：
+                                將按鈕群組與作者名稱分別排列在左右兩側。
+
+                                align-items-center：
+                                讓內容在垂直方向置中對齊。
+                            -->
                             <div class="d-flex justify-content-between align-items-center">
+
+                                <!-- 書籍功能按鈕群組 -->
                                 <div class="btn-group">
-                                    <a asp-page="BookDetail" asp-route-slug="@book.Slug" class="btn btn-sm btn-outline-primary">Details</a>
-                                    <a asp-page="EditBook" asp-route-id="@book.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                    <form asp-page-handler="delete" asp-route-id="@book.Id" method="post">
-                                        <button class="btn btn-sm btn-outline-secondary">Delete</button>
+
+                                    <!--
+                                        前往 BookDetail Razor Page。
+
+                                        asp-page="BookDetail"：
+                                        對應 BookDetail.cshtml
+                                        產生網址: /BookDetail
+                                        如果 BookDetail.cshtml有設定路由
+                                        @* @page "/book/{slug}" *@
+                                        則網址會變:/book
+
+                                        asp-route-slug="@book.Slug"：
+                                        將目前書籍的 Slug 當作路由參數傳送。
+
+                                        例如產生的網址可能是：
+                                        /book/lotr
+                                    -->
+                                    <a asp-page="BookDetail"
+                                       asp-route-slug="@book.Slug"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Details
+                                    </a>
+
+                                    <!--
+                                        前往 EditBook Razor Page。
+
+                                        asp-page="EditBook"：
+                                        對應 Pages/EditBook.cshtml。
+
+                                        asp-route-id="@book.Id"：
+                                        將目前書籍的 Id 傳送到 EditBook 頁面。
+
+                                        例如產生的網址可能是：
+                                        /EditBook?id=1
+                                    -->
+                                    <a asp-page="EditBook"
+                                       asp-route-id="@book.Id"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        Edit
+                                    </a>
+
+                                    <!--
+                                        刪除書籍的表單。
+
+                                        method="post"：
+                                        使用 HTTP POST 方法送出表單。
+
+                                        asp-page-handler="delete"：
+                                        表單會送到目前 Books Razor Page 的
+                                        OnPostDelete 或 OnPostDeleteAsync 方法。
+
+                                        asp-route-id="@book.Id"：
+                                        將要刪除的書籍 Id 一起傳送。
+
+                                        對應方法可能是：
+
+                                        public IActionResult OnPostDelete(int id)
+                                        {
+                                            ...
+                                        }
+                                    -->
+                                    <form asp-page-handler="delete"
+                                          asp-route-id="@book.Id"
+                                          method="post">
+
+                                        <!--
+                                            type="submit"：
+                                            按下按鈕後送出表單。
+                                        -->
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-secondary">
+                                            Delete
+                                        </button>
                                     </form>
                                 </div>
+
+                                <!-- 顯示書籍作者 -->
                                 <small class="text-muted">@book.Author</small>
                             </div>
                         </div>
@@ -34,6 +186,16 @@
     </div>
 </div>
 
+@*
+    定義名稱為 AdditionalFooter 的 Razor Section。
+
+    這個區塊必須在 _Layout.cshtml 中使用以下程式碼，
+    才會被顯示：
+
+    @RenderSection("AdditionalFooter", required: false)
+
+    required: false 表示其他頁面可以不提供這個區塊。
+*@
 @section AdditionalFooter
 {
     <p>Additional footer information just for this page.</p>
