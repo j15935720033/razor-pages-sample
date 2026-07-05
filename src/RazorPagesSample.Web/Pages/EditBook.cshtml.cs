@@ -16,6 +16,7 @@ namespace RazorPagesSample.Web.Pages
     public class EditBookModel : PageModel
     {
         // 書籍服務，用來查詢及更新書籍資料。
+        /// readonly 表示欄位只能在宣告時或建構子中指定。
         private readonly IBookService _bookService;
 
         /// <summary>

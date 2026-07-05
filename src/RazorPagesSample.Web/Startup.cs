@@ -95,6 +95,13 @@ namespace RazorPagesSample.Web
             services.AddScoped<IEmailService, EmailService>();
 
             // 把 IBookService 介面與 BookService 類別註冊到 DI 容器。
+            //
+            // 當其他類別要求 IBookService 時，
+            // ASP.NET Core 會自動建立 BookService。
+            //
+            // AddScoped 表示：
+            // 每一次 HTTP Request 使用同一個物件，
+            // 不同 Request 會建立不同物件。
             services.AddScoped<IBookService, BookService>();
 
             // 加入 Logging 日誌功能。
