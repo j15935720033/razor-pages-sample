@@ -23,19 +23,29 @@
     ViewData["Title"] = "Edit Book";
 }
 
-@* Bootstrap 的 container，用來限制內容寬度並讓內容置中。 *@
+
+@* 
+    Bootstrap 的 container 只會讓整個內容區塊置中並限制最大寬度，
+    不會讓裡面的 .col-md-8 自動水平置中。 
+*@
 <div class="container">
 
     @* 
         顯示目前正在編輯的書籍名稱。
         Model.Book.Title 是從 EditBookModel 中取得 Book 資料。
+        mt-4 : 上方外距
+        mb-3 : 下方外距
+        text-center : 水平置中
     *@
-    <h1 class="mt-4 mb-3">
+    <h1 class="mt-4 mb-3 text-center">
         @Model.Book.Title
     </h1>
 
-    @* Bootstrap 網格系統的列。 *@
-    <div class="row">
+    @* 
+        Bootstrap 網格系統的列。
+        justify-content-center：將 row 裡面的欄位水平置中。
+    *@
+    <div class="row justify-content-center" >
 
         @* 
             在中型螢幕以上占用 8 欄。
