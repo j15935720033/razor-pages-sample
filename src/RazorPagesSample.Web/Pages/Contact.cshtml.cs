@@ -78,16 +78,23 @@ namespace RazorPagesSample.Web.Pages
                 // 呼叫電子郵件服務寄送聯絡表單內容。
                 _emailService.SendMail(Contact);
 
+
                 // 寄送完成後，重新導向到 Confirmation Razor Page。
+                // RedirectToPageResult 重新導向是 GET 請求
                 //
                 // 第一個參數 "Confirmation"：
                 // 表示導向 Pages/Confirmation.cshtml。
                 //
                 // 第二個參數 "Contact"：
                 // 表示指定 Page Handler 為 Contact。
-                //
-                // 最後會執行 ConfirmationModel 中的：
-                // OnGetContact()
+                // 會在 Confirmation.cshtml.cs 裡尋找 OnGetContact()
+
+                /*
+                    new RedirectToPageResult(
+                        pageName: "Confirmation",
+                        pageHandler: "Contact"
+                    );
+                */
                 return new RedirectToPageResult("Confirmation", "Contact");
             }
 
